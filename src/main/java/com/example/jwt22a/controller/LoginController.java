@@ -55,7 +55,7 @@ public class LoginController {
     }
 
     @PostMapping("/dologin")
-    public ResponseEntity<String> registerUser2(@RequestBody Customer customer) {
+    public ResponseEntity<String> doLogin(@RequestBody Customer customer) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customer.getEmail(), customer.getPwd()));
         if(authentication.isAuthenticated()){
             //return JwtResponseDTO.builder()
