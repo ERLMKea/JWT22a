@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BankService implements UserDetailsService {
+public class BankLoadUserService implements UserDetailsService {
 
     @Autowired
     CustomerRepository customerRepository;
@@ -26,7 +26,12 @@ public class BankService implements UserDetailsService {
         System.out.println("loadUser kaldt: user=" + username);
         String userName, password = null;
         List<GrantedAuthority> authorities = null;
-        Optional<Customer> customer = customerRepository.findByEmail(username);
+        Optional<Customer> customer = null;
+        try {
+            customer = customerRepository.findByEmail(username);
+        } catch (Exception ex) {
+            System.out.println("Database fejl =" + ex.getMessage());
+        }
         if (customer.isPresent()) {
             userName = customer.get().getEmail();
             password = customer.get().getPwd();

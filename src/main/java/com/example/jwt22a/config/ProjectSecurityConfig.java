@@ -9,14 +9,16 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+//not used
 public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/myAccount", "/myBalance").authenticated()
+                        .requestMatchers("/myAccount").hasRole("ADMIN")
+                        .requestMatchers("/myBalance").hasAnyRole("ADMIN","SALES")
+                        //.requestMatchers("/myAccount", "/myBalance").authenticated()
                         .requestMatchers("/contact", "/register").permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
